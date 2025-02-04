@@ -1,17 +1,19 @@
-# Базовый образ Python (выберите нужную версию)
+# Используем официальный лёгкий образ Python 3.9
 FROM python:3.9-slim
 
-# Создадим директорию для приложения
+# Устанавливаем рабочую директорию в контейнере
 WORKDIR /app
 
-# Скопируем список зависимостей
+# Скопируем список зависимостей (requirements.txt) в контейнер
 COPY requirements.txt .
 
-# Установим зависимости
-RUN pip install --no-cache-dir -r requirements.txt
+# Устанавливаем зависимости из requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
 
-# Скопируем остальные файлы в контейнер
+# Копируем остальные файлы проекта (скрипт и т.д.)
 COPY . .
 
-# Команда, которая будет выполняться при запуске контейнера
+# Указываем команду запуска нашего скрипта
+# Если ваш файл называется иначе, замените plushpepe_parser.py на нужный
 CMD ["python", "plushpepe_webscraper.py"]
